@@ -34,10 +34,16 @@ conventions](notation.md), and books and articles for further study in
 | [4. From the principle to field equations](../notebooks/part1_principle/04_field_equations.ipynb) | core | diffusion and the Einstein relation; the Stokes, Darcy and Brinkman equations |
 | [5. The approximation method](../notebooks/part1_principle/05_approximation_method.ipynb) | core | trial profiles for diffusion; a dynamical shape parameter; the Onsager–Machlup integral; what to trust |
 
+## Part II. Liquids and interfaces
+
+| Chapter | Track | Topics |
+|---|:-:|---|
+| [6. Capillary rise and imbibition](../notebooks/part2_liquids_interfaces/06_capillary_rise.ipynb) | core | the Lucas–Washburn law; Jurin's height; inertia and oscillations; imbibition into porous materials |
+| [7. Spreading of a droplet](../notebooks/part2_liquids_interfaces/07_spreading_droplet.ipynb) | core | the friction of a liquid wedge; Tanner's law; partial wetting; the thin-film equation; what a trial shape cannot give |
+
 ## In preparation
 
-Part II, liquids and interfaces: capillary rise and imbibition; spreading of a
-droplet; coalescence and sintering of viscous drops; a drying droplet. Part III,
+Part II: coalescence and sintering of viscous drops; a drying droplet. Part III,
 soft materials: diffusion and sedimentation of colloids; swelling and squeezing of a
 gel; phase separation; polymer dynamics; nematic liquid crystals.
 
@@ -48,6 +54,7 @@ gel; phase separation; polymer dynamics; nematic liquid crystals.
 | meeting the principle for the first time | Chapters 1 and 2 |
 | familiar with the principle and want to use it | Chapters 3 and 5 |
 | interested in where the transport equations come from | Chapter 4 |
+| looking for a complete application | Chapters 6 and 7 |
 
 ## Companion books
 

@@ -158,3 +158,53 @@ def test_compare():
     assert on.relative_error(1.1, 1.0) == pytest.approx(0.1)
     with pytest.raises(ValueError):
         on.loglog_slope([1.0], [1.0])
+
+
+# ---------------------------------------------------------------- thin films
+
+def _cap(n=400, length=2.4, b=0.01):
+    edges = np.linspace(0.0, length, n + 1)
+    r = 0.5 * (edges[1:] + edges[:-1])
+    return edges, r, np.maximum(1 - r**2, 0.0) + b
+
+
+def test_thin_film_conserves_volume_and_spreads():
+    edges, r, h0 = _cap()
+    t = np.array([0.0, 1.0, 10.0])
+    r, h = on.thin_film_fv(h0, edges, t)
+    volume = 2 * np.pi * np.sum(h * r, axis=1) * (edges[1] - edges[0])
+    assert np.ptp(volume) < 1e-10
+    assert h.min() > 0
+    radii = [on.fit_cap(r, hk, b=0.01)[1] for hk in h]
+    assert radii[0] == pytest.approx(1.0, abs=2e-3)
+    assert radii[0] < radii[1] < radii[2]
+    # Tanner's law with its logarithm, dR/dt = 4 / (l R**9) with l = ln(h_c / b) - 1:
+    # the mean rate between t = 1 and t = 10 lies between the rates at the two ends
+    rate = (radii[2] - radii[1]) / 9.0
+    tanner = [4 / ((np.log(1 / (R**2 * 0.01)) - 1) * R**9) for R in radii[1:]]
+    assert 0.8 * tanner[1] < rate < 1.2 * tanner[0]
+
+
+def test_thin_film_partial_wetting_reaches_the_equilibrium_angle():
+    edges, r, h0 = _cap(n=500, length=2.0, b=0.005)
+    r, h = on.thin_film_fv(h0, edges, np.array([0.0, 300.0]), theta_e=0.6, b=0.005)
+    hc, R = on.fit_cap(r, h[-1], b=0.005)
+    assert 2 * hc / R == pytest.approx(0.6, rel=0.06)
+    assert R == pytest.approx((2 / 0.6) ** (1 / 3), rel=0.03)
+
+
+def test_thin_film_planar_and_bad_arguments():
+    edges, r, h0 = _cap(n=300, length=2.0)
+    r, h = on.thin_film_fv(h0, edges, np.array([0.0, 1.0]), geometry="planar")
+    assert np.ptp(np.sum(h, axis=1)) < 1e-10
+    with pytest.raises(ValueError):
+        on.thin_film_fv(h0, edges, np.array([0.0, 1.0]), geometry="spherical")
+    with pytest.raises(ValueError):
+        on.thin_film_fv(h0, edges, np.array([0.0, 1.0]), theta_e=0.5)
+
+
+def test_fit_cap_recovers_a_parabola():
+    r = np.linspace(0.005, 3, 300)
+    h = np.maximum(0.7 * (1 - r**2 / 1.6**2), 0) + 0.02
+    hc, R = on.fit_cap(r, h, b=0.02)
+    assert hc == pytest.approx(0.7) and R == pytest.approx(1.6)

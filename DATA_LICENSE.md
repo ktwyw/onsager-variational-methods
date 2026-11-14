@@ -17,4 +17,5 @@ The source code (`onsager/`, `tests/`, `scripts/`, and the code cells of the
 notebooks) is licensed separately under the MIT licence; see `LICENSE`.
 
 All numerical results in the notebooks are computed within the notebooks
-themselves. No third-party data are included in this release.
+themselves. Material properties of liquids are typical literature values, quoted for
+illustration. No third-party data sets are included in this release.

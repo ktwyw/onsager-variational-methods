@@ -27,5 +27,7 @@ abstract: >-
   the Onsager variational principle in soft matter: the Rayleighian, Onsager's
   kinetic equations and reciprocal relations, how to write free energies and
   dissipation functions, the derivation of the diffusion, Stokes and Darcy
-  equations, and the approximation method with trial functions. Every
-  variational result is checked against an exact or numerical solution.
+  equations, the approximation method with trial functions, and their first
+  applications to liquids and interfaces (capillary rise and imbibition;
+  spreading of a droplet). Every variational result is checked against an
+  exact or numerical solution.

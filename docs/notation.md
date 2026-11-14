@@ -12,7 +12,7 @@
 | $\zeta$ | friction constant of one particle ($6\pi\eta a$ for a sphere) |
 | $\eta$ | viscosity |
 | $\xi$ | friction per unit volume between a liquid and a porous solid, $\eta/\kappa$ |
-| $\kappa$ | permeability (Chapter 4); gradient-energy coefficient (Chapter 3) |
+| $\kappa$ | permeability (Chapters 4 and 6); gradient-energy coefficient (Chapter 3) |
 | $c$ | number density; $f(c)$ free energy density |
 | $\mu$ | chemical potential, $\delta A/\delta c$ (not to be confused with $\mu_{ij}$) |
 | $\Pi$ | osmotic pressure, $c f' - f$ |
@@ -21,6 +21,15 @@
 | $\delta A/\delta c$ | functional derivative |
 | $p$ | pressure; the Lagrange multiplier of incompressibility |
 | $a_\alpha$ | parameters of a trial solution (Chapter 5) |
+| $\gamma$, $\theta$ | surface tension; contact angle (Part II); in Chapter 7 $\theta$ is the dynamic and $\theta_e$ the equilibrium angle |
+| $h_J$ | Jurin height, $2\gamma\cos\theta/\rho g a$ (Chapter 6) |
+| $\phi$ | porosity (Chapter 6) |
+| $\Omega$ | volume of a drop (Chapter 7) |
+| $S$ | spreading coefficient, $\gamma_{SV} - \gamma_{SL} - \gamma$ (Chapter 7) |
+| $h_c$, $R$ | thickness at the centre and radius of the wetted circle of a drop (Chapter 7) |
+| $b$ | microscopic cut-off at a contact line; thickness of a precursor film (Chapter 7) |
+| $\ell$ | the logarithm $\ln(h_c/b) - 1$ in the friction of a liquid wedge (Chapter 7); elsewhere a length |
+| $\xi_{\rm cl}$, $\xi_{\rm hyd}$ | friction constant of a contact line; its hydrodynamic part, $3\eta\ell/\theta$ (Chapter 7) |
 
 Conventions:
 

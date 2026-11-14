@@ -31,3 +31,17 @@ follow any of them; the list is a starting point for readers who want more.
 * L. Onsager, "Reciprocal relations in irreversible processes. I", *Phys. Rev.* **37**, 405 (1931).
 * L. Onsager, "Reciprocal relations in irreversible processes. II", *Phys. Rev.* **38**, 2265 (1931).
 * L. Onsager and S. Machlup, "Fluctuations and irreversible processes", *Phys. Rev.* **91**, 1505 (1953).
+* R. Lucas, "Ueber das Zeitgesetz des kapillaren Aufstiegs von Flüssigkeiten", *Kolloid-Z.* **23**, 15 (1918).
+* E. W. Washburn, "The dynamics of capillary flow", *Phys. Rev.* **17**, 273 (1921).
+* C. H. Bosanquet, "On the flow of liquids into capillary tubes", *Phil. Mag.* **45**, 525 (1923).
+* D. Quéré, "Inertial capillarity", *Europhys. Lett.* **39**, 533 (1997).
+* D. Quéré, É. Raphaël and J.-Y. Ollitrault, "Rebounds in a capillary tube", *Langmuir* **15**, 3679 (1999).
+* L. H. Tanner, "The spreading of silicone oil drops on horizontal surfaces", *J. Phys. D: Appl. Phys.* **12**, 1473 (1979).
+* P. G. de Gennes, "Wetting: statics and dynamics", *Rev. Mod. Phys.* **57**, 827 (1985).
+* D. Bonn, J. Eggers, J. Indekeu, J. Meunier and E. Rolley, "Wetting and spreading", *Rev. Mod. Phys.* **81**, 739 (2009).
+* C. Huh and L. E. Scriven, "Hydrodynamic model of steady movement of a solid/liquid/fluid contact line", *J. Colloid Interface Sci.* **35**, 85 (1971).
+* O. V. Voinov, "Hydrodynamics of wetting", *Fluid Dyn.* **11**, 714 (1976).
+* R. G. Cox, "The dynamics of the spreading of liquids on a solid surface. Part 1. Viscous flow", *J. Fluid Mech.* **168**, 169 (1986).
+* L. W. Schwartz and R. R. Eley, "Simulation of droplet motion on low-energy and heterogeneous surfaces", *J. Colloid Interface Sci.* **202**, 173 (1998).
+* H. E. Huppert, "The propagation of two-dimensional and axisymmetric viscous gravity currents over a rigid horizontal surface", *J. Fluid Mech.* **121**, 43 (1982).
+* G. McHale, M. I. Newton, S. M. Rowan and M. Banerjee, "The spreading of small viscous stripes of oil", *J. Phys. D: Appl. Phys.* **28**, 1925 (1995).

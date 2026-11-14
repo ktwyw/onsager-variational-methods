@@ -27,6 +27,10 @@ project:
         - file: notebooks/part1_principle/03_writing_the_two_functions.ipynb
         - file: notebooks/part1_principle/04_field_equations.ipynb
         - file: notebooks/part1_principle/05_approximation_method.ipynb
+    - title: "Part II. Liquids and interfaces"
+      children:
+        - file: notebooks/part2_liquids_interfaces/06_capillary_rise.ipynb
+        - file: notebooks/part2_liquids_interfaces/07_spreading_droplet.ipynb
     - title: "Solutions to the exercises"
       children:
         - file: solutions/part1_principle/01_solutions.ipynb
@@ -34,6 +38,8 @@ project:
         - file: solutions/part1_principle/03_solutions.ipynb
         - file: solutions/part1_principle/04_solutions.ipynb
         - file: solutions/part1_principle/05_solutions.ipynb
+        - file: solutions/part2_liquids_interfaces/06_solutions.ipynb
+        - file: solutions/part2_liquids_interfaces/07_solutions.ipynb
     - file: docs/notation.md
     - file: docs/references.md
 site:

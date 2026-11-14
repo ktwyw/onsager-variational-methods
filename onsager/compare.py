@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 
-__all__ = ["sup_error", "relative_error", "loglog_slope"]
+__all__ = ["sup_error", "relative_error", "loglog_slope", "fit_cap"]
 
 
 def sup_error(approx, exact):
@@ -32,3 +32,27 @@ def loglog_slope(x, y, fit_range=None):
         raise ValueError("need at least two positive values in the fitted range")
     slope, intercept = np.polyfit(np.log(x[keep]), np.log(y[keep]), 1)
     return slope, float(np.exp(intercept))
+
+
+def fit_cap(r, h, b=0.0, fraction=0.5):
+    """Apparent height and radius of a thin drop, from a parabola fitted to its centre.
+
+    Fits h - b = h_c * (1 - r**2 / R**2) by least squares over r < fraction * R and
+    returns (h_c, R).  The fit uses only the central part of the profile, where the
+    pressure is uniform, so R is the radius at which the cap would meet the solid
+    if it kept its shape up to the edge, and 2 * h_c / R is the apparent contact
+    angle.  r is the distance from the axis (or from the mid-plane of a ridge) and
+    b the thickness of a precursor film.
+    """
+    r = np.asarray(r, dtype=float)
+    h = np.asarray(h, dtype=float)
+    R = r[np.argmax(-np.gradient(h, r))]          # first guess: the steepest point
+    for _ in range(6):
+        keep = r < fraction * R
+        if keep.sum() < 3:
+            raise ValueError("too few points inside the fitted part of the drop")
+        c2, c0 = np.polyfit(r[keep] ** 2, h[keep] - b, 1)
+        if c2 >= 0 or c0 <= 0:
+            raise ValueError("the profile is not a cap")
+        R = float(np.sqrt(-c0 / c2))
+    return float(c0), R
