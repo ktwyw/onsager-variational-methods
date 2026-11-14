@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onsager"
+version = "0.1.0.dev0"
+description = "Small, readable tools for the Onsager variational principle; companion module to the onsager-variational-methods notebooks."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Yanwei Wang", email = "yanwei.wang@nu.edu.kz" }]
+requires-python = ">=3.10"
+dependencies = ["numpy>=2.0", "scipy>=1.13", "matplotlib>=3.5", "sympy>=1.10"]
+
+[project.urls]
+Homepage = "https://ktwyw.github.io/onsager-variational-methods/"
+Repository = "https://github.com/ktwyw/onsager-variational-methods"
+
+[project.optional-dependencies]
+notebooks = ["jupyterlab", "nbconvert", "ipykernel"]
+test = ["pytest"]
+
+[tool.setuptools]
+packages = ["onsager"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

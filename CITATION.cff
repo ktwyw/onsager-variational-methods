@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this material, please cite it as below."
+type: software
+title: "Variational methods in soft matter: the Onsager principle through worked problems"
+version: 0.1.0.dev0
+date-released: 2026-11-14
+authors:
+  - family-names: Wang
+    given-names: Yanwei
+    orcid: "https://orcid.org/0000-0002-8488-9833"
+    email: yanwei.wang@nu.edu.kz
+    affiliation: "Department of Chemical and Materials Engineering, School of Engineering, Nazarbayev University, Astana, Kazakhstan"
+repository-code: "https://github.com/ktwyw/onsager-variational-methods"
+url: "https://ktwyw.github.io/onsager-variational-methods/"
+license:
+  - MIT
+  - CC-BY-4.0
+keywords:
+  - Onsager principle
+  - variational methods
+  - Rayleighian
+  - dissipation function
+  - soft matter
+  - education
+abstract: >-
+  An open book of executed Jupyter notebooks, with a small Python module, on
+  the Onsager variational principle in soft matter: the Rayleighian, Onsager's
+  kinetic equations and reciprocal relations, how to write free energies and
+  dissipation functions, the derivation of the diffusion, Stokes and Darcy
+  equations, and the approximation method with trial functions. Every
+  variational result is checked against an exact or numerical solution.

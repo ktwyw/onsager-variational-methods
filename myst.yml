@@ -1,0 +1,42 @@
+# Jupyter Book 2 (mystmd) configuration
+version: 1
+project:
+  title: "Variational methods in soft matter"
+  description: The Onsager principle taught through worked problems, with every variational result checked against an exact or numerical solution, in executed notebooks.
+  keywords: [Onsager principle, variational methods, Rayleighian, dissipation function, soft matter]
+  authors:
+    - name: Yanwei Wang
+      orcid: 0000-0002-8488-9833
+      affiliations:
+        - School of Engineering, Nazarbayev University
+  github: https://github.com/ktwyw/onsager-variational-methods
+  license:
+    content: CC-BY-4.0
+    code: MIT
+  exclude:
+    - README.md
+    - DATA_LICENSE.md
+    - CHANGELOG.md
+    - _build/**
+  toc:
+    - file: docs/intro.md
+    - title: "Part I. The principle"
+      children:
+        - file: notebooks/part1_principle/01_why_a_variational_principle.ipynb
+        - file: notebooks/part1_principle/02_kinetic_equations.ipynb
+        - file: notebooks/part1_principle/03_writing_the_two_functions.ipynb
+        - file: notebooks/part1_principle/04_field_equations.ipynb
+        - file: notebooks/part1_principle/05_approximation_method.ipynb
+    - title: "Solutions to the exercises"
+      children:
+        - file: solutions/part1_principle/01_solutions.ipynb
+        - file: solutions/part1_principle/02_solutions.ipynb
+        - file: solutions/part1_principle/03_solutions.ipynb
+        - file: solutions/part1_principle/04_solutions.ipynb
+        - file: solutions/part1_principle/05_solutions.ipynb
+    - file: docs/notation.md
+    - file: docs/references.md
+site:
+  template: book-theme
+  options:
+    logo_text: Variational methods in soft matter
