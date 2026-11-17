@@ -208,3 +208,209 @@ def test_fit_cap_recovers_a_parabola():
     h = np.maximum(0.7 * (1 - r**2 / 1.6**2), 0) + 0.02
     hc, R = on.fit_cap(r, h, b=0.02)
     assert hc == pytest.approx(0.7) and R == pytest.approx(1.6)
+
+
+# ---------------------------------------------------------------- coalescence
+
+def test_hopper_solution_limits_and_area():
+    assert on.hopper_time(1.0) == 0.0
+    assert on.hopper_neck(1.0) == 0.0 and on.hopper_neck(0.0) == pytest.approx(np.sqrt(2))
+    assert on.hopper_length(1.0) == pytest.approx(2.0)          # two touching circles of radius 1
+    for m in (0.9, 0.5, 0.1):
+        X, Y = on.hopper_shape(m, n=20001)
+        area = 0.5 * abs(np.sum(X[:-1] * Y[1:] - X[1:] * Y[:-1]))
+        assert area == pytest.approx(2 * np.pi, rel=1e-5)          # area of two unit circles
+        assert np.max(X) == pytest.approx(on.hopper_length(m), rel=1e-6)
+        assert X[0] == pytest.approx(0, abs=1e-12) and Y[0] == pytest.approx(on.hopper_neck(m), rel=1e-12)
+        polygon = np.sum(np.hypot(np.diff(X), np.diff(Y)))
+        assert on.hopper_perimeter(m) == pytest.approx(polygon, rel=1e-5)
+    assert on.hopper_perimeter(0.0) == pytest.approx(2 * np.sqrt(2) * np.pi)
+
+
+def test_hopper_time_asymptotes_and_inverse():
+    # late times: m ~ exp(-gamma t / eta R_f), R_f = sqrt(2)
+    t1, t2 = on.hopper_time(1e-3), on.hopper_time(1e-4)
+    assert (t2 - t1) / np.log(10) == pytest.approx(np.sqrt(2), rel=1e-3)
+    # early times: t = pi x / |ln(x / 8)| (Eggers, Lister and Stone 1999), to 10 %
+    m = 1 - 1e-6
+    x = on.hopper_neck(m)
+    assert on.hopper_time(m) == pytest.approx(np.pi * x / abs(np.log(x / 8)), rel=0.1)
+    for t in (0.01, 0.5, 3.0):
+        assert on.hopper_time(on.hopper_parameter(t)) == pytest.approx(t, rel=1e-9)
+
+
+# ---------------------------------------------------------------- drying drops
+
+def test_drying_film_conserves_solute_and_dries():
+    b = 0.005
+    edges = np.linspace(0.0, 1.5, 301)
+    r = 0.5 * (edges[1:] + edges[:-1])
+    cap = np.maximum(1 - r**2, 0.0)
+    out = on.drying_film_fv(cap + b, cap, edges, evaporation=1.0, theta_e=2.0, b=b, stop_volume=0.2, n_out=20)
+    assert out["volume"][-1] == pytest.approx(0.2 * out["volume"][0], rel=1e-3)
+    assert np.ptp(out["solute"]) < 1e-9
+    assert np.all(np.diff(out["volume"]) < 0)
+    # the contact line recedes: less liquid beyond r = 0.9 at the end
+    assert np.all(out["h"][-1][r > 0.9] < 2 * b)
+
+
+# ---------------------------------------------------------------- sedimentation
+
+def test_sedimentation_matches_mason_weaver_and_conserves():
+    edges = np.linspace(0.0, 1.0, 401)
+    z = 0.5 * (edges[1:] + edges[:-1])
+    t = np.array([0.0, 0.05, 0.5, 5.0])
+    z, phi = on.sedimentation_fv(np.ones_like(z), edges, t, alpha=5.0)
+    assert np.ptp(phi.sum(axis=1)) * (z[1] - z[0]) < 1e-12
+    for k in (1, 2, 3):
+        assert np.max(np.abs(phi[k] - on.mason_weaver(z, t[k], 5.0))) < 2e-4
+    # equilibrium: the barometric profile
+    assert np.max(np.abs(phi[-1] - 5 * np.exp(-5 * z) / (1 - np.exp(-5)))) < 1e-4
+
+
+def test_mason_weaver_limits():
+    z = np.linspace(0, 1, 11)
+    assert np.allclose(on.mason_weaver(z, 50.0, 3.0), 3 * np.exp(-3 * z) / (1 - np.exp(-3)))
+    zz = np.linspace(0, 1, 2001)
+    assert np.trapezoid(on.mason_weaver(zz, 0.1, 3.0), zz) == pytest.approx(1.0, rel=1e-6)
+
+
+def test_sedimentation_front_moves_at_the_hindered_velocity():
+    edges = np.linspace(0.0, 1.0, 801)
+    z = 0.5 * (edges[1:] + edges[:-1])
+    K = lambda p: (1 - p) ** 4.65
+    cs = lambda p: p * (1 + p + p**2 - p**3) / (1 - p) ** 3
+    z, phi = on.sedimentation_fv(np.full_like(z, 0.1), edges, np.array([0.0, 0.5]), 60.0, cs, K)
+    front = z[np.where(phi[-1] > 0.05)[0].max()]
+    assert front == pytest.approx(1 - 0.5 * K(0.1), abs=0.01)
+
+
+# ------------------------------------------------------------------ gels
+
+def test_gel_sphere_roots_limits():
+    assert np.allclose(on.gel_sphere_roots(0.0, 4), np.pi * np.arange(1, 5), atol=1e-10)
+    # shear-dominated gel: the slowest rate tends to 15 K / f a^2 (uniform dilation)
+    alpha = on.gel_sphere_roots(1e4, 1)[0]
+    assert (1 + 4e4 / 3) * alpha**2 == pytest.approx(15.0, rel=1e-3)
+
+
+def test_gel_sphere_series_is_tanaka_fillmore_for_zero_shear():
+    t = 0.03
+    n = np.arange(1, 400)
+    expected = 1 - np.sum(6 / (n * np.pi) ** 2 * np.exp(-(n * np.pi) ** 2 * t))   # swelling of the volume
+    r = np.linspace(0, 1, 4001)
+    u = on.gel_sphere_series(r, t, 0.0)
+    dilation = np.gradient(u, r) + 2 * np.divide(u, r, out=np.ones_like(u), where=r > 0)
+    assert np.trapezoid(dilation * r**2, r) == pytest.approx(expected, abs=2e-4)   # mean of div u over 3 = (u(1) for volume)
+    assert u[-1] == pytest.approx(expected, abs=1e-6)
+
+
+def test_gel_finite_elements_match_the_series():
+    t = np.array([0.01, 0.1])
+    x, u = on.gel_fe(300, 0.6, t)
+    for k in range(2):
+        assert np.max(np.abs(u[k] - on.gel_sphere_series(x, t[k], 0.6))) < 2e-5
+    x, u = on.gel_fe(300, 0.6, t, geometry="sheet")
+    for k in range(2):
+        assert np.max(np.abs(u[k] - on.gel_sheet_series(x, t[k], 0.6))) < 2e-5
+
+
+# ------------------------------------------------------------------ phase separation
+
+def _fh(chi):
+    f = lambda p: p * np.log(p) + (1 - p) * np.log(1 - p) + chi * p * (1 - p)
+    df = lambda p: np.log(np.clip(p, 1e-12, 1) / np.clip(1 - p, 1e-12, 1)) + chi * (1 - 2 * p)
+    return f, df
+
+
+def test_cahn_hilliard_linear_growth_rates():
+    chi = 2.5
+    _, df = _fh(chi)
+    n, box = 256, 2 * np.pi / 0.25
+    rng = np.random.default_rng(0)
+    t = np.linspace(0, 20, 11)
+    phi = on.cahn_hilliard_spectral(0.5 + 1e-6 * rng.standard_normal(n), box, t, df, 0.01)
+    amp = np.abs(np.fft.rfft(phi, axis=1))
+    k = 2 * np.pi * np.fft.rfftfreq(n, d=box / n)
+    for m in (1, 2, 3):
+        rate = np.polyfit(t[3:], np.log(amp[3:, m]), 1)[0]
+        assert rate == pytest.approx(-k[m] ** 2 * (4 - 2 * chi + k[m] ** 2), rel=1e-3)
+    assert np.ptp(phi.mean(axis=1)) < 1e-12
+
+
+def test_cahn_hilliard_interface_tension():
+    chi = 3.0
+    f, df = _fh(chi)
+    from scipy.optimize import brentq
+    from scipy.integrate import quad
+    pe = brentq(lambda p: df(p), 1e-9, 0.4999)
+    gamma = quad(lambda p: np.sqrt(max(2 * (f(p) - f(pe)), 0.0)), pe, 1 - pe, limit=200)[0]
+    n, box = 512, 100.0
+    x = np.arange(n) * box / n
+    phi = on.cahn_hilliard_spectral(np.where((x > 25) & (x < 75), 1 - pe, pe), box, [0.0, 100.0], df, 0.01)[-1]
+    k = 2 * np.pi * np.fft.fftfreq(n, d=box / n)
+    grad = np.real(np.fft.ifft(1j * k * np.fft.fft(phi)))
+    excess = np.sum(f(phi) - f(pe) + 0.5 * grad**2) * box / n / 2
+    assert excess == pytest.approx(gamma, rel=1e-4)
+
+
+def test_cahn_hilliard_free_energy_decreases_in_2d():
+    chi = 2.5
+    f, df = _fh(chi)
+    rng = np.random.default_rng(2)
+    n, box = 64, 64.0
+    t = np.array([0.0, 20.0, 40.0, 80.0, 160.0])
+    snaps = on.cahn_hilliard_spectral(0.5 + 0.01 * rng.standard_normal((n, n)), box, t, df, 0.5)
+    k = 2 * np.pi * np.fft.fftfreq(n, d=box / n)
+    kx, ky = np.meshgrid(k, k, indexing="ij")
+    def energy(p):
+        h = np.fft.fft2(p)
+        gx, gy = np.real(np.fft.ifft2(1j * kx * h)), np.real(np.fft.ifft2(1j * ky * h))
+        return np.mean(f(p) + 0.5 * (gx**2 + gy**2))
+    e = [energy(p) for p in snaps]
+    assert all(b < a for a, b in zip(e, e[1:]))
+    assert np.ptp(snaps.mean(axis=(1, 2))) < 1e-12
+
+
+# ------------------------------------------------------------------ polymer chains
+
+def test_rouse_brownian_dynamics_equilibrium_and_decay():
+    rng = np.random.default_rng(5)
+    t, ends, middle = on.rouse_brownian_dynamics(8, 3000, 0.005, 6.0, 200, rng)
+    size = np.mean(np.sum(ends**2, axis=2), axis=1)
+    assert np.all(np.abs(size / 7.0 - 1) < 0.06)                      # <R^2> = (N - 1) b^2 throughout
+    corr = np.mean(np.sum(ends * ends[0], axis=2), axis=1) / 7.0
+    lam1 = 12 * np.sin(np.pi / 16) ** 2                                  # slowest Rouse rate, N = 8
+    assert corr[-1] == pytest.approx(np.exp(-lam1 * t[-1]), abs=0.05)
+
+
+def test_fene_chain_steady_state():
+    N, Q = 20, 10.0
+    lam1 = 12 * np.sin(np.pi / (2 * N)) ** 2
+    assert on.fene_chain_steady(N, 0.95 * lam1, Q) is None                # below the threshold: no stretch
+    x = on.fene_chain_steady(N, 3 * lam1, Q)
+    assert np.allclose(x, -x[::-1], atol=1e-8)                           # symmetric about the stagnation point
+    s = np.diff(x)
+    T = 3.0 * s / (1 - (s / Q) ** 2)
+    assert np.allclose(np.diff(T), -3 * lam1 * x[1:-1], rtol=1e-6, atol=1e-8)  # force balance on the inner beads
+
+
+# ------------------------------------------------------------------ nematic liquid crystals
+
+def test_freedericksz_twist_angle():
+    assert on.freedericksz_twist_angle(0.99) == 0.0
+    h = 1 + 1e-6
+    assert on.freedericksz_twist_angle(h) == pytest.approx(2 * np.sqrt(h - 1), rel=1e-5)
+    assert on.freedericksz_twist_angle(20.0) == pytest.approx(np.pi / 2, abs=1e-6)
+
+
+def test_director_fd_matches_the_exact_twist_and_the_linear_rate():
+    n = 199
+    z = np.arange(1, n + 1) / (n + 1)
+    h = 2.0
+    torque = lambda th: h * h * np.sin(th) * np.cos(th)
+    final = on.director_fd(0.01 * np.sin(np.pi * z), np.array([0.0, 60.0]), torque, 1 / np.pi**2)[-1]
+    assert final.max() == pytest.approx(on.freedericksz_twist_angle(h), abs=1e-4)
+    t = np.linspace(0.0, 1.0, 6)
+    early = on.director_fd(1e-7 * np.sin(np.pi * z), t, torque, 1 / np.pi**2)
+    assert np.polyfit(t, np.log(early[:, n // 2]), 1)[0] == pytest.approx(h * h - 1, rel=1e-3)

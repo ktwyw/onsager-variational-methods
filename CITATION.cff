@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this material, please cite it as below."
 type: software
 title: "Variational methods in soft matter: the Onsager principle through worked problems"
-version: 0.1.0.dev0
-date-released: 2026-11-14
+version: 0.1.0
+date-released: 2026-11-17
 authors:
   - family-names: Wang
     given-names: Yanwei
@@ -29,5 +29,8 @@ abstract: >-
   dissipation functions, the derivation of the diffusion, Stokes and Darcy
   equations, the approximation method with trial functions, and their first
   applications to liquids and interfaces (capillary rise and imbibition;
-  spreading of a droplet). Every variational result is checked against an
-  exact or numerical solution.
+  spreading of a droplet; coalescence and sintering; a drying droplet) and to
+  soft materials (diffusion and sedimentation of colloids; swelling and
+  squeezing of a gel; phase separation; polymer dynamics; nematic liquid
+  crystals). Every variational result is checked against an exact or
+  numerical solution.

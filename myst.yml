@@ -31,6 +31,15 @@ project:
       children:
         - file: notebooks/part2_liquids_interfaces/06_capillary_rise.ipynb
         - file: notebooks/part2_liquids_interfaces/07_spreading_droplet.ipynb
+        - file: notebooks/part2_liquids_interfaces/08_coalescence_sintering.ipynb
+        - file: notebooks/part2_liquids_interfaces/09_drying_droplet.ipynb
+    - title: "Part III. Soft materials"
+      children:
+        - file: notebooks/part3_soft_materials/10_diffusion_sedimentation.ipynb
+        - file: notebooks/part3_soft_materials/11_gel_swelling.ipynb
+        - file: notebooks/part3_soft_materials/12_phase_separation.ipynb
+        - file: notebooks/part3_soft_materials/13_polymer_dynamics.ipynb
+        - file: notebooks/part3_soft_materials/14_nematic_liquid_crystals.ipynb
     - title: "Solutions to the exercises"
       children:
         - file: solutions/part1_principle/01_solutions.ipynb
@@ -40,6 +49,13 @@ project:
         - file: solutions/part1_principle/05_solutions.ipynb
         - file: solutions/part2_liquids_interfaces/06_solutions.ipynb
         - file: solutions/part2_liquids_interfaces/07_solutions.ipynb
+        - file: solutions/part2_liquids_interfaces/08_solutions.ipynb
+        - file: solutions/part2_liquids_interfaces/09_solutions.ipynb
+        - file: solutions/part3_soft_materials/10_solutions.ipynb
+        - file: solutions/part3_soft_materials/11_solutions.ipynb
+        - file: solutions/part3_soft_materials/12_solutions.ipynb
+        - file: solutions/part3_soft_materials/13_solutions.ipynb
+        - file: solutions/part3_soft_materials/14_solutions.ipynb
     - file: docs/notation.md
     - file: docs/references.md
 site:

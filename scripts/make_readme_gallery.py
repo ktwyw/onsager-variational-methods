@@ -12,7 +12,7 @@ import os
 
 root = os.path.join(os.path.dirname(__file__), "..")
 # chapter number -> which figure of the notebook to use (0 = first)
-choice = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 1, 7: 1}
+choice = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 2, 13: 2, 14: 2}
 
 for chapter, index in choice.items():
     path = glob.glob(os.path.join(root, "notebooks", "*", f"{chapter:02d}_*.ipynb"))[0]

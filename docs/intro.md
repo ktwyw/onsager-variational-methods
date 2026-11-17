@@ -17,12 +17,13 @@ interpret. Every result is compared with the exact or fully numerical solution o
 the same problem. The notebooks share a small Python module, `onsager`, written to
 be read as much as to be used.
 
-The chapters assume thermodynamics and fluid mechanics at the level of a senior
-undergraduate. No calculus of variations is assumed; functional derivatives are
-introduced from the beginning in Chapter 3. Each chapter ends with exercises,
-and a sample solution to every exercise is given in the *Solutions* part of the book. Symbols are collected in [Notation and
-conventions](notation.md), and books and articles for further study in
-[Suggested references](references.md).
+The level is that of a graduate course in physics or engineering, and the chapters
+assume thermodynamics and fluid mechanics at the level of a senior undergraduate.
+No calculus of variations is assumed; functional derivatives are introduced from the
+beginning in Chapter 3. Each chapter ends with four exercises, and a sample solution
+to every exercise is given in the *Solutions* part of the book. Symbols are collected
+in [Notation and conventions](notation.md), and books and articles for further study
+in [Suggested references](references.md).
 
 ## Part I. The principle
 
@@ -40,12 +41,23 @@ conventions](notation.md), and books and articles for further study in
 |---|:-:|---|
 | [6. Capillary rise and imbibition](../notebooks/part2_liquids_interfaces/06_capillary_rise.ipynb) | core | the Lucas–Washburn law; Jurin's height; inertia and oscillations; imbibition into porous materials |
 | [7. Spreading of a droplet](../notebooks/part2_liquids_interfaces/07_spreading_droplet.ipynb) | core | the friction of a liquid wedge; Tanner's law; partial wetting; the thin-film equation; what a trial shape cannot give |
+| [8. Coalescence and sintering of viscous drops](../notebooks/part2_liquids_interfaces/08_coalescence_sintering.ipynb) | core | Frenkel's model; trial shapes and trial flows that must fit; the minimum principle as a bound; Hopper's exact solution |
+| [9. A drying droplet](../notebooks/part2_liquids_interfaces/09_drying_droplet.ipynb) | core | flow driven by evaporation; contact-line friction; coffee rings, volcanoes and mountains |
 
-## In preparation
+## Part III. Soft materials
 
-Part II: coalescence and sintering of viscous drops; a drying droplet. Part III,
-soft materials: diffusion and sedimentation of colloids; swelling and squeezing of a
-gel; phase separation; polymer dynamics; nematic liquid crystals.
+| Chapter | Track | Topics |
+|---|:-:|---|
+| [10. Diffusion and sedimentation of colloids](../notebooks/part3_soft_materials/10_diffusion_sedimentation.ipynb) | core | osmotic pressure and friction; collective diffusion and hindered settling; sedimentation equilibrium; trial solutions that must have the right physics |
+| [11. Swelling and squeezing of a gel](../notebooks/part3_soft_materials/11_gel_swelling.ipynb) | core | stress and diffusion in a gel; swelling and squeezing of a sheet; a swelling sphere and the shear modulus; trial functions as bounds |
+| [12. Phase separation](../notebooks/part3_soft_materials/12_phase_separation.ipynb) | core | the Cahn–Hilliard equation from the Rayleighian; phase diagram and interface; spinodal decomposition; coarsening |
+| [13. Polymer dynamics](../notebooks/part3_soft_materials/13_polymer_dynamics.ipynb) | core | the Rouse model; normal modes; fluctuations and Onsager's regression hypothesis; the dumbbell as a trial; coil–stretch transition |
+| [14. Nematic liquid crystals](../notebooks/part3_soft_materials/14_nematic_liquid_crystals.ipynb) | core | Frank elasticity and rotational friction; the Fréedericksz transition; switching; flow alignment, tumbling and the Parodi relation |
+
+## Still to come
+
+Part IV, on dissipation functions that are not quadratic and on error estimates for
+trial solutions, will be added after the corresponding research papers are published.
 
 ## Where to start
 
@@ -55,6 +67,12 @@ gel; phase separation; polymer dynamics; nematic liquid crystals.
 | familiar with the principle and want to use it | Chapters 3 and 5 |
 | interested in where the transport equations come from | Chapter 4 |
 | looking for a complete application | Chapters 6 and 7 |
+| interested in where trial solutions go wrong | Chapters 5, 7, 8 and 10 |
+| working with colloids or suspensions | Chapters 4 and 10 |
+| working with gels | Chapters 10 and 11 |
+| working with mixtures and phase separation | Chapters 4 and 12 |
+| working with polymers | Chapters 2 and 13 |
+| working with liquid crystals | Chapters 2 and 14 |
 
 ## Companion books
 
